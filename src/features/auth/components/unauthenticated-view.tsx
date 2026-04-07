@@ -26,9 +26,11 @@ export function UnauthenticatedView() {
             </ItemDescription>
           </ItemContent>
           <ItemActions>
-            <Button asChild size="sm" variant="outline">
-              <SignInButton />
-            </Button>
+            <SignInButton>
+              <Button size="sm" variant="outline">
+                Sign in
+              </Button>
+            </SignInButton>
           </ItemActions>
         </Item>
       </div>
