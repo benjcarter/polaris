@@ -1,0 +1,6 @@
+procs:
+  next:
+    cmd: ["bun", "run", "dev"]
+
+  convex:
+    cmd: ["bun", "run", "convex:dev"]
