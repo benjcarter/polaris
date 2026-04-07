@@ -1,6 +1,6 @@
 "use client";
 
-import { ClerkProvider, UserButton } from "@clerk/nextjs";
+import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { Authenticated, AuthLoading, Unauthenticated } from "convex/react";
 
@@ -22,10 +22,7 @@ export function Providers({ children }: ProvidersProps) {
           defaultTheme="dark"
           disableTransitionOnChange
         >
-          <Authenticated>
-            <UserButton />
-            {children}
-          </Authenticated>
+          <Authenticated>{children}</Authenticated>
           <Unauthenticated>
             <UnauthenticatedView />
           </Unauthenticated>
