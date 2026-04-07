@@ -18,7 +18,10 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Polaris",
+  title: {
+    template: "%s | Polaris",
+    default: "Polaris",
+  },
   description: "An AI-powered code editor, directly in your browser.",
 };
 
