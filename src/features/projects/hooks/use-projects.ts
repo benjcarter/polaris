@@ -14,6 +14,10 @@ export function useGetRecentUserProjects(limit: number) {
   return useQuery(api.projects.getRecentUserProjects, { limit });
 }
 
+export function useGetProjectById(projectId: Id<"projects">) {
+  return useQuery(api.projects.getProjectById, { id: projectId });
+}
+
 export function useCreateProject() {
   return useMutation(api.projects.createProject).withOptimisticUpdate(
     (localStore, args) => {
@@ -49,6 +53,63 @@ export function useCreateProject() {
             0,
             RECENT_PROJECTS_LIMIT,
           ),
+        );
+      }
+    },
+  );
+}
+
+export function useRenameProject() {
+  return useMutation(api.projects.renameProject).withOptimisticUpdate(
+    (localStore, args) => {
+      const existingProject = localStore.getQuery(api.projects.getProjectById, {
+        id: args.id,
+      });
+
+      if (existingProject !== undefined && existingProject !== null) {
+        localStore.setQuery(
+          api.projects.getProjectById,
+          { id: args.id },
+          {
+            ...existingProject,
+            name: args.name,
+            updatedAt: Date.now(),
+          },
+        );
+      }
+
+      const existingProjects = localStore.getQuery(
+        api.projects.getUserProjects,
+      );
+
+      if (existingProjects !== undefined) {
+        localStore.setQuery(
+          api.projects.getUserProjects,
+          {},
+          existingProjects.map((project) => {
+            return project._id === args.id
+              ? { ...project, name: args.name, updatedAt: Date.now() }
+              : project;
+          }),
+        );
+      }
+
+      const existingRecentProjects = localStore.getQuery(
+        api.projects.getRecentUserProjects,
+        { limit: RECENT_PROJECTS_LIMIT },
+      );
+
+      if (existingRecentProjects !== undefined) {
+        localStore.setQuery(
+          api.projects.getRecentUserProjects,
+          { limit: RECENT_PROJECTS_LIMIT },
+          existingRecentProjects
+            .map((project) => {
+              return project._id === args.id
+                ? { ...project, name: args.name, updatedAt: Date.now() }
+                : project;
+            })
+            .slice(0, RECENT_PROJECTS_LIMIT),
         );
       }
     },
