@@ -47,7 +47,9 @@ export function Navbar({ projectId }: NavbarProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    document.title = `${project?.name} | Polaris`;
+    if (project?.name) {
+      document.title = `${project.name} | Polaris`;
+    }
   }, [project?.name]);
 
   useEffect(() => {
